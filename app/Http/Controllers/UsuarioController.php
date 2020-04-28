@@ -49,9 +49,7 @@ class UsuarioController extends Controller
     {
         $bodyContent = json_decode($request->getContent(), true);
         $usuario = Usuario::find($bodyContent["id"]);
-        \Log::info('antes del fill: ' . $usuario);
         $usuario->fill($bodyContent);
-        \Log::info('despues del fill: ' . $usuario);
         if (empty($usuario))
             return Response::json(array(
                 'code' => 401,
@@ -59,7 +57,6 @@ class UsuarioController extends Controller
             ), 401);
         if (isset($bodyContent['nombre_modificado']) && $bodyContent['nombre_modificado'] !== "") {
             $usuario->nombre = $bodyContent['nombre_modificado'];
-            \Log::info('despues del modificado: ' . $usuario);
         }
         $usuario->password = Hash::make($request['password']);
         $usuario->tokenReset = null;

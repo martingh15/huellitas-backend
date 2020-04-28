@@ -26,4 +26,9 @@ class Usuario extends Authenticatable
     protected $hidden = [
         'password'
     ];
+
+    public function perdidos()
+    {
+        return $this->hasMany('App\Perdido', "idUsuario", "id");
+    }
 }
