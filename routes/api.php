@@ -20,7 +20,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post("/registro", 'UsuarioController@registro');
 Route::post("/login", 'LoginController@login');
+Route::post("/olvidoPassword", 'LoginController@olvidoPassword');
+Route::post("/resetPassword", 'LoginController@resetPassword');
+Route::post("/validarToken", 'LoginController@validarToken');
+Route::post("/validarTokenEmail", 'LoginController@validarTokenEmail');
 
 Route::group(['middleware' => 'jwt.auth','jwt.refresh'], function () {
     Route::get('/usuarios/create', 'UsuarioController@create');
+    Route::put('/usuarios/{id}', 'UsuarioController@update');
 });
