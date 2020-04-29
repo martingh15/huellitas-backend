@@ -8,12 +8,17 @@ class Animal extends Model
 {
     protected $table = "animales";
 
-    protected $fillable = ['id', 'idUsuario', 'idParticularidades', 'nombre', 'sexo', 'edadAproximada', 'castrado', 'tamanio',
+    protected $fillable = ['id', 'idCreador', 'ultUsuarioMdf', 'ultHraModifico',  'idParticularidades', 'nombre', 'sexo', 'edadAproximada', 'castrado', 'tamanio',
         'celularDuenio', 'telefonoDuenio', 'emailDuenio'];
 
-    public function usuario()
+    public function creador()
     {
-        return $this->belongsTo('App\Usuario', "idUsuario", "id");
+        return $this->belongsTo('App\Usuario', "idCreador", "id");
+    }
+
+    public function ultUsuarioMdf()
+    {
+        return $this->belongsTo('App\Usuario', "ultUsuarioMdf", "id");
     }
 
     public function particularidades()

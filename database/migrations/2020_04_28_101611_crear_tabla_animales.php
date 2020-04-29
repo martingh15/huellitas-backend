@@ -15,8 +15,7 @@ class CrearTablaAnimales extends Migration
     {
         Schema::create('animales', function (Blueprint $table) {
             $table->increments('id')->unique();
-            $table->bigInteger('idUsuario');
-            $table->bigInteger('idParticularidades')->nullable();
+            $table->unsignedInteger('idParticularidades');
             $table->string('nombre')->nullable();
             $table->string('sexo');
             $table->integer('edadAproximada')->nullable();
@@ -25,7 +24,13 @@ class CrearTablaAnimales extends Migration
             $table->string('celularDuenio')->nullable();
             $table->string('telefonoDuenio')->nullable();
             $table->string('emailDuenio')->nullable();
-            $table->timestamps();
+            $table->unsignedInteger('idCreador');
+            $table->unsignedInteger('ultUsuarioMdf');
+            $table->timestamp('ultHoraMdf')->nullable();
+
+            $table->foreign('idCreador')->references('id')->on('usuarios');
+            $table->foreign('idParticularidades')->references('id')->on('animales_particularidades');
+            $table->foreign('ultUsuarioMdf')->references('id')->on('usuarios');
         });
     }
 

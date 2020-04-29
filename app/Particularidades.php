@@ -8,11 +8,18 @@ class Particularidades extends Model
 {
     protected $table = "animales_particularidades";
 
-    protected $fillable = ['id', 'idUsuario', 'idAnimal', 'sordo', 'ciego', 'tresPatas'];
+    protected $fillable = ['id', 'idCreador', 'ultUsuarioMdf', 'ultHraModifico', 'idAnimal', 'sordo', 'ciego', 'tresPatas'];
 
-    public function usuario()
+    public $timestamps = false;
+
+    public function creador()
     {
-        return $this->belongsTo('App\Usuario', "idUsuario", "id");
+        return $this->belongsTo('App\Usuario', "idCreador", "id");
+    }
+
+    public function ultUsuarioMdf()
+    {
+        return $this->belongsTo('App\Usuario', "ultUsuarioMdf", "id");
     }
 
     public function animal()

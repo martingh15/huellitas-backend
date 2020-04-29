@@ -28,4 +28,6 @@ Route::post("/validarTokenEmail", 'LoginController@validarTokenEmail');
 Route::group(['middleware' => 'jwt.auth','jwt.refresh'], function () {
     Route::get('/usuarios/create', 'UsuarioController@create');
     Route::put('/usuarios/{id}', 'UsuarioController@update');
+    Route::post('/animales','AnimalController@store');
+    Route::put('/animales/{idAnimal}','AnimalController@update');
 });

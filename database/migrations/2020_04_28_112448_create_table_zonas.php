@@ -15,8 +15,12 @@ class CreateTableZonas extends Migration
     {
         Schema::create('zonas', function (Blueprint $table) {
             $table->increments('id')->unique();
-            $table->bigInteger('idUsuario');
-            $table->bigInteger('nombre');
+            $table->string('nombre');
+            $table->unsignedInteger('idCreador');
+            $table->unsignedInteger('ultUsuarioMdf');
+
+            $table->foreign('idCreador')->references('id')->on('usuarios');
+            $table->foreign('ultUsuarioMdf')->references('id')->on('usuarios');
         });
     }
 

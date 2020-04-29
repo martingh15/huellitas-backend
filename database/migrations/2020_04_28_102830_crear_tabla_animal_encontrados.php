@@ -15,13 +15,21 @@ class CrearTablaAnimalEncontrados extends Migration
     {
         Schema::create('animales_encontrados', function (Blueprint $table) {
             $table->increments('id')->unique();
-            $table->bigInteger('idUsuario');
-            $table->bigInteger('idAnimal');
-            $table->string('idZona');
+            $table->unsignedInteger('idAnimal');
+            $table->unsignedInteger('idZona');
             $table->timestamp('fechaEncontrado');
             $table->string('celularPersona')->nullable();
             $table->string('telefonoPersona')->nullable();
             $table->string('emailPersona')->nullable();
+            $table->unsignedInteger('idCreador');
+            $table->unsignedInteger('ultUsuarioMdf');
+            $table->timestamp('ultHoraMdf')->nullable();
+
+            $table->foreign('idCreador')->references('id')->on('usuarios');
+            $table->foreign('idAnimal')->references('id')->on('animales');
+            $table->foreign('idZona')->references('id')->on('zonas');
+            $table->foreign('ultUsuarioMdf')->references('id')->on('usuarios');
+
         });
     }
 
