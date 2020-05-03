@@ -13,24 +13,18 @@ class CrearTablaAnimalEncontrados extends Migration
      */
     public function up()
     {
-        Schema::create('animales_encontrados', function (Blueprint $table) {
-            $table->increments('id')->unique();
-            $table->unsignedInteger('idAnimal');
-            $table->unsignedInteger('idZona');
-            $table->timestamp('fechaEncontrado');
-            $table->string('celularPersona')->nullable();
-            $table->string('telefonoPersona')->nullable();
-            $table->string('emailPersona')->nullable();
-            $table->unsignedInteger('idCreador');
-            $table->unsignedInteger('ultUsuarioMdf');
-            $table->timestamp('ultHoraMdf')->nullable();
-
-            $table->foreign('idCreador')->references('id')->on('usuarios');
-            $table->foreign('idAnimal')->references('id')->on('animales');
-            $table->foreign('idZona')->references('id')->on('zonas');
-            $table->foreign('ultUsuarioMdf')->references('id')->on('usuarios');
-
-        });
+//        Schema::create('animales_encontrados', function (Blueprint $table) {
+//            $table->integer('id')->unsigned();;
+//            $table->integer('idAnimal')->unsigned();;
+//            $table->integer('idZona')->unsigned();;
+//            $table->timestamp('fechaEncontrado');
+//            $table->string('celularPersona')->nullable();
+//            $table->string('telefonoPersona')->nullable();
+//            $table->string('emailPersona')->nullable();
+//            $table->integer('idCreador')->unsigned();;
+//            $table->integer('ultUsuarioMdf')->unsigned();;
+//            $table->timestamp('ultHoraMdf')->nullable();
+//        });
     }
 
     /**
@@ -40,6 +34,6 @@ class CrearTablaAnimalEncontrados extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('animales_encontrados');
+//        Schema::dropIfExists('animales_encontrados');
     }
 }

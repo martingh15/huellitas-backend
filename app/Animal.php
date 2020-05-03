@@ -8,7 +8,9 @@ class Animal extends Model
 {
     protected $table = "animales";
 
-    protected $fillable = ['id', 'idCreador', 'ultUsuarioMdf', 'ultHraModifico',  'idParticularidades', 'nombre', 'sexo', 'edadAproximada', 'castrado', 'tamanio',
+    public $timestamps = false;
+
+    protected $fillable = ['id', 'idCreador', 'ultUsuarioMdf', 'ultHraModifico',  'idParticularidades', 'nombre', 'sexo', 'edadAproximada', 'tamanio',
         'celularDuenio', 'telefonoDuenio', 'emailDuenio'];
 
     public function creador()

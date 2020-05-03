@@ -1,0 +1,126 @@
+-- Tabla Usuarios
+CREATE TABLE `usuarios` (
+    `id` int unsigned NOT NULL AUTO_INCREMENT,
+    `nombre` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+    `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+    `tokenEmail` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+    `tokenReset` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+    `fechaTokenReset` timestamp NULL DEFAULT NULL,
+    `habilitado` tinyint(1) NOT NULL DEFAULT '0',
+    `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+    `ultHoraMdf` timestamp NULL DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `usuarios_email_unique` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Tabla Zonas
+CREATE TABLE `zonas` (
+     `id` int unsigned NOT NULL AUTO_INCREMENT,
+     `nombre` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+     PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Tablas Animales
+CREATE TABLE `animales` (
+        `id` int unsigned NOT NULL AUTO_INCREMENT,
+        `idZona` int unsigned NOT NULL,
+        `idBarrio` int unsigned NULL,
+        `nombre` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+        `sexo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+        `edadAproximada` int DEFAULT NULL,
+        `castrado` tinyint(1) NOT NULL,
+        `tamanio` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+        `particularidades` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+        `idCreador` int unsigned NOT NULL,
+        `ultUsuarioMdf` int unsigned NOT NULL,
+        `ultHoraMdf` timestamp NULL DEFAULT NULL,
+        PRIMARY KEY (`id`),
+        KEY `animales_idcreador_foreign` (`idCreador`),
+        KEY `animales_ultusuariomdf_foreign` (`ultUsuarioMdf`),
+        CONSTRAINT `animales_idcreador_foreign` FOREIGN KEY (`idCreador`) REFERENCES `usuarios` (`id`),
+        CONSTRAINT `animales_ultusuariomdf_foreign` FOREIGN KEY (`ultUsuarioMdf`) REFERENCES `usuarios` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+ALTER TABLE animales ADD FOREIGN KEY (`idZona`) REFERENCES zonas(`id`);
+
+--  Tabla Animales Perdidos
+CREATE TABLE `animales_perdidos` (
+     `id` int unsigned NOT NULL AUTO_INCREMENT,
+     `idAnimal` int unsigned NOT NULL,
+     `fechaPerdido` timestamp NOT NULL,
+     `celularDuenio` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+     `celularSecundario` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+     `idCreador` int unsigned NOT NULL,
+     `ultUsuarioMdf` int unsigned NOT NULL,
+     `ultHoraMdf` timestamp NULL DEFAULT NULL,
+     PRIMARY KEY (`id`),
+     KEY `animales_perdidos_idcreador_foreign` (`idCreador`),
+     KEY `animales_perdidos_ultusuariomdf_foreign` (`ultUsuarioMdf`),
+     CONSTRAINT `animales_perdidos_idcreador_foreign` FOREIGN KEY (`idCreador`) REFERENCES `usuarios` (`id`),
+     CONSTRAINT `animales_perdidos_ultusuariomdf_foreign` FOREIGN KEY (`ultUsuarioMdf`) REFERENCES `usuarios` (`id`),
+     UNIQUE KEY `animales_perdidos_unique` (`idAnimal`,`fechaPerdido`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE UNIQUE INDEX index_animales_perdidos ON animales_perdidos (idAnimal);
+
+-- Tabla Animales Encontrados
+CREATE TABLE `animales_encontrados` (
+    `id` int unsigned NOT NULL AUTO_INCREMENT,
+    `idAnimal` int unsigned NOT NULL,
+    `fechaEncontrado` timestamp NOT NULL,
+    `celularPersona` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+    `telefonoPersona` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+    `emailPersona` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+    `idCreador` int unsigned NOT NULL,
+    `ultUsuarioMdf` int unsigned NOT NULL,
+    `ultHoraMdf` timestamp NULL DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    KEY `animales_encontrados_idcreador_foreign` (`idCreador`),
+    KEY `animales_encontrados_ultusuariomdf_foreign` (`ultUsuarioMdf`),
+    CONSTRAINT `animales_encontrados_idcreador_foreign` FOREIGN KEY (`idCreador`) REFERENCES `usuarios` (`id`),
+    CONSTRAINT `animales_encontrados_ultusuariomdf_foreign` FOREIGN KEY (`ultUsuarioMdf`) REFERENCES `usuarios` (`id`),
+    UNIQUE KEY `animales_encontrados_unique` (`idAnimal`, `fechaEncontrado`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE UNIQUE INDEX index_animales_encontrados_idAnimal ON animales_encontrados (idAnimal);
+
+-- Tabla Barrios
+CREATE TABLE `barrios` (
+   `id` int unsigned NOT NULL AUTO_INCREMENT,
+   `nombre` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Claves foráneas de Animales Encontrados
+ALTER TABLE animales_encontrados ADD FOREIGN KEY (`idAnimal`) REFERENCES animales(`id`);
+
+-- Claves foráneas de Animales Perdidos
+ALTER TABLE animales_perdidos ADD FOREIGN KEY (`idAnimal`) REFERENCES animales(`id`);
+
+insert into `barrios` values(default,'Abasto');
+insert into `barrios` values(default,'Alberdi');
+insert into `barrios` values(default,'Lisandro de la Torre');
+insert into `barrios` values(default,'Parque');
+insert into `barrios` values(default,'Belgrano');
+insert into `barrios` values(default,'Domingo Matheu');
+insert into `barrios` values(default,'Echesortu');
+insert into `barrios` values(default,'Empalpe Graneros');
+insert into `barrios` values(default,'Fisherton');
+insert into `barrios` values(default,'General San Martín');
+insert into `barrios` values(default,'Grandoli');
+insert into `barrios` values(default,'Ludueña');
+insert into `barrios` values(default,'Martin');
+insert into `barrios` values(default,'Parque Field');
+insert into `barrios` values(default,'Pichincha');
+insert into `barrios` values(default,'Puerto Norte');
+insert into `barrios` values(default,'Islas Malvinas');
+insert into `barrios` values(default,'República de la Sexta');
+insert into `barrios` values(default,'Roque Saenz Peña');
+insert into `barrios` values(default,'José Ignacio Rucci');
+insert into `barrios` values(default,'Saladillo');
+insert into `barrios` values(default,'Sorrento');
+
+insert into `zonas` values(default,'Distrito Centro "Antonio Berni"');
+insert into `zonas` values(default,'Distrito Norte "Villa Hortensia"');
+insert into `zonas` values(default,'Distrito Noroeste "Olga y Leticia Cossettini"');
+insert into `zonas` values(default,'Distrito Oeste "Felipe Moré"');
+insert into `zonas` values(default,'Distrito Sudoeste "Emilia Bertolé"');
+insert into `zonas` values(default,'Distrito Sur "Rosa Ziperovich"');

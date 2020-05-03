@@ -13,25 +13,24 @@ class CrearTablaAnimales extends Migration
      */
     public function up()
     {
-        Schema::create('animales', function (Blueprint $table) {
-            $table->increments('id')->unique();
-            $table->unsignedInteger('idParticularidades');
-            $table->string('nombre')->nullable();
-            $table->string('sexo');
-            $table->integer('edadAproximada')->nullable();
-            $table->boolean('castrado');
-            $table->string('tamanio')->nullable();
-            $table->string('celularDuenio')->nullable();
-            $table->string('telefonoDuenio')->nullable();
-            $table->string('emailDuenio')->nullable();
-            $table->unsignedInteger('idCreador');
-            $table->unsignedInteger('ultUsuarioMdf');
-            $table->timestamp('ultHoraMdf')->nullable();
-
-            $table->foreign('idCreador')->references('id')->on('usuarios');
-            $table->foreign('idParticularidades')->references('id')->on('animales_particularidades');
-            $table->foreign('ultUsuarioMdf')->references('id')->on('usuarios');
-        });
+//        Schema::create('animales', function (Blueprint $table) {
+//            $table->increments('id')->unsigned();
+//            $table->integer('idParticularidades')->unsigned();
+//            $table->string('nombre')->nullable();
+//            $table->string('sexo');
+//            $table->integer('edadAproximada')->nullable();
+//            $table->boolean('castrado');
+//            $table->string('tamanio')->nullable();
+//            $table->string('celularDuenio')->nullable();
+//            $table->string('telefonoDuenio')->nullable();
+//            $table->string('emailDuenio')->nullable();
+//            $table->integer('idCreador')->unsigned();;
+//            $table->integer('ultUsuarioMdf')->unsigned();;
+//            $table->timestamp('ultHoraMdf')->nullable();
+//
+//            $table->foreign('idCreador')->references('id')->on('usuarios');
+//            $table->foreign('ultUsuarioMdf')->references('id')->on('usuarios');
+//        });
     }
 
     /**
@@ -41,6 +40,6 @@ class CrearTablaAnimales extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('animales');
+//        Schema::dropIfExists('animales');
     }
 }

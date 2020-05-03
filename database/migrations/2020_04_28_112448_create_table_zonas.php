@@ -13,15 +13,10 @@ class CreateTableZonas extends Migration
      */
     public function up()
     {
-        Schema::create('zonas', function (Blueprint $table) {
-            $table->increments('id')->unique();
-            $table->string('nombre');
-            $table->unsignedInteger('idCreador');
-            $table->unsignedInteger('ultUsuarioMdf');
-
-            $table->foreign('idCreador')->references('id')->on('usuarios');
-            $table->foreign('ultUsuarioMdf')->references('id')->on('usuarios');
-        });
+//        Schema::create('zonas', function (Blueprint $table) {
+//            $table->integer('id')->unsigned();;
+//            $table->string('nombre');
+//        });
     }
 
     /**
@@ -31,6 +26,6 @@ class CreateTableZonas extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('zonas');
+//        Schema::dropIfExists('zonas');
     }
 }

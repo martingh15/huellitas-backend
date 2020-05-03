@@ -8,6 +8,8 @@ class Perdido extends Model
 {
     protected $table = "animales_perdidos";
 
+    public $timestamps = false;
+
     protected $fillable = ['id', 'idUsuario', 'idAnimal', 'idZona', 'fechaPerdido'];
 
     public function usuario()
@@ -22,6 +24,6 @@ class Perdido extends Model
 
     public function zona()
     {
-        return $this->belongsTo('App\Zona', "idZona", "id");
+        return $this->belongsTo('App\Barrio', "idZona", "id");
     }
 }

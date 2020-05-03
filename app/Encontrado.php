@@ -8,6 +8,8 @@ class Encontrado extends Model
 {
     protected $table = "animales_encontrados";
 
+    public $timestamps = false;
+
     protected $fillable = ['id', 'idUsuario', 'idAnimal', 'idZona', 'fechaEncontrado', 'celularPersona',
         'telefonoPersona', 'emailPersona'];
 
@@ -23,6 +25,6 @@ class Encontrado extends Model
 
     public function zona()
     {
-        return $this->belongsTo('App\Zona', "idZona", "id");
+        return $this->belongsTo('App\Barrio', "idZona", "id");
     }
 }

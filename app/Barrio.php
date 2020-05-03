@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Zona extends Model
+class Barrio extends Model
 {
-    protected $table = "zonas";
+    protected $table = "barrios";
 
     public $timestamps = false;
 
