@@ -28,3 +28,6 @@ DROP INDEX `animales_perdidos_unique` ;
 DROP TABLE `huellitas`.`animales_perdidos`;
 DROP TABLE `huellitas`.`animales_encontrados`;
 DROP TABLE `huellitas`.`animales`;
+DROP TABLE `huellitas`.`usuarios`;
+DROP TABLE `huellitas`.`zonas`;
+DROP TABLE `huellitas`.`barrios`;

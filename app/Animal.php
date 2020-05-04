@@ -10,8 +10,7 @@ class Animal extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['id', 'idCreador', 'ultUsuarioMdf', 'ultHraModifico',  'idParticularidades', 'nombre', 'sexo', 'edadAproximada', 'tamanio',
-        'celularDuenio', 'telefonoDuenio', 'emailDuenio'];
+    protected $fillable = ['id', 'idZona', 'idBarrio', 'nombre', 'sexo', 'edadAproximada', 'castrado', 'tamanio', 'particularidades', 'idCreador', 'ultUsuarioMdf', 'ultHoraMdf'];
 
     public function creador()
     {

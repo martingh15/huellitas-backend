@@ -10,7 +10,7 @@ class Perdido extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['id', 'idUsuario', 'idAnimal', 'idZona', 'fechaPerdido'];
+    protected $fillable = ['id', 'idAnimal', 'fechaPerdido', 'celularDuenio', 'celularSecundario', 'idCreador', 'ultUsuarioMdf', 'ultHoraMdf'];
 
     public function usuario()
     {

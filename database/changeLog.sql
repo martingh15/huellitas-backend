@@ -5,10 +5,10 @@ CREATE TABLE `usuarios` (
     `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
     `tokenEmail` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
     `tokenReset` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-    `fechaTokenReset` timestamp NULL DEFAULT NULL,
+    `fechaTokenReset` datetime NULL DEFAULT NULL,
     `habilitado` tinyint(1) NOT NULL DEFAULT '0',
     `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-    `ultHoraMdf` timestamp NULL DEFAULT NULL,
+    `ultHoraMdf` datetime NULL DEFAULT NULL,
     PRIMARY KEY (`id`),
     UNIQUE KEY `usuarios_email_unique` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -26,14 +26,16 @@ CREATE TABLE `animales` (
         `idZona` int unsigned NOT NULL,
         `idBarrio` int unsigned NULL,
         `nombre` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+        `imagenPrincipal` varchar(255) DEFAULT NULL,
+        `imagenSecundaria` varchar(255) DEFAULT NULL,
         `sexo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-        `edadAproximada` int DEFAULT NULL,
+        `edadAproximada` varchar(255) NOT NULL,
         `castrado` tinyint(1) NOT NULL,
-        `tamanio` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+        `tamanio` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
         `particularidades` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
         `idCreador` int unsigned NOT NULL,
         `ultUsuarioMdf` int unsigned NOT NULL,
-        `ultHoraMdf` timestamp NULL DEFAULT NULL,
+        `ultHoraMdf` datetime NULL DEFAULT NULL,
         PRIMARY KEY (`id`),
         KEY `animales_idcreador_foreign` (`idCreador`),
         KEY `animales_ultusuariomdf_foreign` (`ultUsuarioMdf`),
@@ -47,12 +49,13 @@ ALTER TABLE animales ADD FOREIGN KEY (`idZona`) REFERENCES zonas(`id`);
 CREATE TABLE `animales_perdidos` (
      `id` int unsigned NOT NULL AUTO_INCREMENT,
      `idAnimal` int unsigned NOT NULL,
-     `fechaPerdido` timestamp NOT NULL,
-     `celularDuenio` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+     `fechaPerdido` datetime NOT NULL,
+     `celularDuenio` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
      `celularSecundario` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+     `habilitado` tinyint(1) NOT NULL DEFAULT '0',
      `idCreador` int unsigned NOT NULL,
      `ultUsuarioMdf` int unsigned NOT NULL,
-     `ultHoraMdf` timestamp NULL DEFAULT NULL,
+     `ultHoraMdf` datetime NULL DEFAULT NULL,
      PRIMARY KEY (`id`),
      KEY `animales_perdidos_idcreador_foreign` (`idCreador`),
      KEY `animales_perdidos_ultusuariomdf_foreign` (`ultUsuarioMdf`),
@@ -66,13 +69,12 @@ CREATE UNIQUE INDEX index_animales_perdidos ON animales_perdidos (idAnimal);
 CREATE TABLE `animales_encontrados` (
     `id` int unsigned NOT NULL AUTO_INCREMENT,
     `idAnimal` int unsigned NOT NULL,
-    `fechaEncontrado` timestamp NOT NULL,
-    `celularPersona` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-    `telefonoPersona` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-    `emailPersona` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+    `fechaEncontrado` datetime NOT NULL,
+    `celularPersona` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+    `celularSecundario` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
     `idCreador` int unsigned NOT NULL,
     `ultUsuarioMdf` int unsigned NOT NULL,
-    `ultHoraMdf` timestamp NULL DEFAULT NULL,
+    `ultHoraMdf` datetime NULL DEFAULT NULL,
     PRIMARY KEY (`id`),
     KEY `animales_encontrados_idcreador_foreign` (`idCreador`),
     KEY `animales_encontrados_ultusuariomdf_foreign` (`ultUsuarioMdf`),
@@ -124,3 +126,5 @@ insert into `zonas` values(default,'Distrito Noroeste "Olga y Leticia Cossettini
 insert into `zonas` values(default,'Distrito Oeste "Felipe Moré"');
 insert into `zonas` values(default,'Distrito Sudoeste "Emilia Bertolé"');
 insert into `zonas` values(default,'Distrito Sur "Rosa Ziperovich"');
+
+insert into usuarios values(default, 'Martin', 'martinghiotti2013@gmail.com', null,null,null,1, '$2y$10$YwIBg.N2k3NiV4tuXDtBme.cAORjAIlBqiuBraF4iXfiZQvV574BG', current_date);

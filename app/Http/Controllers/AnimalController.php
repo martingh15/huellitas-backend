@@ -15,8 +15,7 @@ class AnimalController extends Controller
 
     public function store(Request $request) {
         $bodyContent = json_decode($request->getContent(), true);
-
-        $resultado = $this->crearMascota($bodyContent);
+        return $this->crearMascota($bodyContent);
     }
 
     public function update(Request $request) {
@@ -29,9 +28,7 @@ class AnimalController extends Controller
             ], 200);
         }
         $mascota = Animal::where('id', '=', $bodyContent['id'])->with('particularidades')->first();
-        \Log::info($mascota);
         $mascota = Animal::find($bodyContent['id']);
-        \Log::info($mascota);
         if (!$mascota) {
             return response()->json([
                 'code' => 500,
