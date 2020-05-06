@@ -41,20 +41,20 @@ trait AnimalService
             $mascota->ultHoraMdf = Carbon::now()->format('Y-m-d');
             $mascota->save();
             \Log::info('Mascota creada: ' . $mascota);
-            $resultado1 = $this->crearImagenesAnimal($mascota, $imagen1, true);
-            if (isset($resultado1['error'])) {
-                return [
-                    'errores' => $resultado1['error']
-                ];
-            }
-            if ($imagen2 !== null) {
-                $resultado2 = $this->crearImagenesAnimal($mascota, $imagen2, false);
-                if (isset($resultado2['error'])) {
-                    return [
-                        'errores' => $resultado2['error']
-                    ];
-                }
-            }
+//            $resultado1 = $this->crearImagenesAnimal($mascota, $imagen1, true);
+//            if (isset($resultado1['error'])) {
+//                return [
+//                    'errores' => $resultado1['error']
+//                ];
+//            }
+//            if ($imagen2 !== null) {
+//                $resultado2 = $this->crearImagenesAnimal($mascota, $imagen2, false);
+//                if (isset($resultado2['error'])) {
+//                    return [
+//                        'errores' => $resultado2['error']
+//                    ];
+//                }
+//            }
             return $mascota;
         } catch(Exception $e) {
             return [
@@ -91,13 +91,10 @@ trait AnimalService
 
         //nombre de la imagen con idUnico-idGremio, obtengo la extension original del archivo
         $id = $esPrincipal ? 1 : 2;
-        $fileName = "$id-" . $mascota->id . "-" . uniqid() . "." . $imagen->getClientOriginalExtension();
-        $carpeta = public_path() . '/perdidos/' . $mascota->id;
-        if (!file_exists($carpeta)) {
-            mkdir($carpeta, 0777, true);
-        }
+        $fileName = "$mascota->id-" . $id . "-" . uniqid() . "." . $imagen->getClientOriginalExtension();
+        $carpeta = public_path() . '/img/perdidos/' . $fileName;
         //Genero la imagen
-        $rutaImagen = $carpeta . '/' . $fileName;
+        $rutaImagen = $carpeta . '/' . $mascota->id . "-" . $id;
         $img = Image::make($rutaImagen);
 
         //Altura de la imagen a redimensionar en px

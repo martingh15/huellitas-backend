@@ -26,6 +26,7 @@ Route::post("/validarToken", 'LoginController@validarToken');
 Route::post("/validarTokenEmail", 'LoginController@validarTokenEmail');
 Route::resource('/barrios','BarrioController');
 Route::resource('/zonas','ZonaController');
+Route::get('/perdidos','PerdidoController@index');
 
 Route::group(['middleware' => 'jwt.auth','jwt.refresh'], function () {
     Route::get('/usuarios/create', 'UsuarioController@create');

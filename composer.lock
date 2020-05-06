@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "97a26ec341459a393b29e34edfe16766",
+    "content-hash": "792638edff3305db1b42fc7c4968247a",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -338,16 +338,16 @@
         },
         {
             "name": "intervention/image",
-            "version": "dev-master",
+            "version": "2.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Intervention/image.git",
-                "reference": "a59085a161dc63db97cbe81fd576025c8e699570"
+                "reference": "abbf18d5ab8367f96b3205ca3c89fb2fa598c69e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Intervention/image/zipball/a59085a161dc63db97cbe81fd576025c8e699570",
-                "reference": "a59085a161dc63db97cbe81fd576025c8e699570",
+                "url": "https://api.github.com/repos/Intervention/image/zipball/abbf18d5ab8367f96b3205ca3c89fb2fa598c69e",
+                "reference": "abbf18d5ab8367f96b3205ca3c89fb2fa598c69e",
                 "shasum": ""
             },
             "require": {
@@ -404,7 +404,7 @@
                 "thumbnail",
                 "watermark"
             ],
-            "time": "2019-11-02T09:24:56+00:00"
+            "time": "2019-11-02T09:15:47+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -4521,9 +4521,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "intervention/image": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

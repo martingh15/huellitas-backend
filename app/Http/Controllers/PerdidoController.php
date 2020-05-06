@@ -12,13 +12,14 @@ class PerdidoController extends Controller
     use PerdidoService;
 
     /**
-     * Display a listing of the resource.
+     *  Display a listing of the resource.
      *
-     * @return Response
+     * @param Request $request
+     * @return mixed
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        return $this->getAll($request->query());
     }
 
     /**
