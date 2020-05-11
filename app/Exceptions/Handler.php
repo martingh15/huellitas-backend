@@ -29,7 +29,7 @@ class Handler extends ExceptionHandler
      *
      * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
      *
-     * @param  \Exception  $exception
+     * @param \Exception $exception
      * @return void
      */
     public function report(Exception $exception)
@@ -40,22 +40,22 @@ class Handler extends ExceptionHandler
     /**
      * Render an exception into an HTTP response.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
+     * @param \Illuminate\Http\Request $request
+     * @param \Exception $exception
      * @return \Illuminate\Http\JsonResponse
      */
     /**
      * Render an exception into an HTTP response.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @param \Exception $exception
+     * @return \Illuminate\Http\JsonResponse
      */
     public function render($request, Exception $exception)
     {
         DB::rollBack();
 
-        if(method_exists($exception, 'render')) {
+        if (method_exists($exception, 'render')) {
             return $exception->render();
         }
 
@@ -64,18 +64,6 @@ class Handler extends ExceptionHandler
         \Log::info($exception->getMessage());
 
         switch ($exception->getMessage()) {
-            case "CAMBIOAPROBADOAPENDIENTE":
-                return Response::json(array(
-                    'code' => 500,
-                    'message' => "Para pasar a pendiente el pedido debe estar aprobado y no estar facturado."
-                ), 500);
-                break;
-            case "CAMBIOAPROBADOACANCELADO":
-                return Response::json(array(
-                    'code' => 500,
-                    'message' => "Para pasar a cancelado el pedido debe estar aprobado."
-                ), 500);
-                break;
             case "ESTADOPEDIDOREPETIDO":
                 return Response::json(array(
                     'code' => 500,
@@ -83,20 +71,17 @@ class Handler extends ExceptionHandler
                 ), 500);
                 break;
             default:
-                return Response::json(array(
-                    'code' => 500,
-                    'message' => "Ocurrió un error inesperado. Intentelo nuevamente. Si el problema persiste comuníquese con el administrador."
-                ), 500);
+                return response()->json(
+                    ['message' => "Ocurrió un error inesperado. Intentelo nuevamente. Si el problema persiste comuníquese con el administrador."]
+                    , 500);
         }
-
-        return parent::render($request, $exception);
     }
 
     /**
      * Convert an authentication exception into an unauthenticated response.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Auth\AuthenticationException  $exception
+     * @param \Illuminate\Http\Request $request
+     * @param \Illuminate\Auth\AuthenticationException $exception
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
     protected function unauthenticated($request, AuthenticationException $exception)

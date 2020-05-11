@@ -29,6 +29,7 @@ CREATE TABLE `animales` (
         `imagenPrincipal` varchar(255) DEFAULT NULL,
         `imagenSecundaria` varchar(255) DEFAULT NULL,
         `sexo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+        `tipo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
         `edadAproximada` varchar(255) NOT NULL,
         `castrado` tinyint(1) NOT NULL,
         `tamanio` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -127,4 +128,19 @@ insert into `zonas` values(default,'Distrito Oeste "Felipe Moré"');
 insert into `zonas` values(default,'Distrito Sudoeste "Emilia Bertolé"');
 insert into `zonas` values(default,'Distrito Sur "Rosa Ziperovich"');
 
-insert into usuarios values(default, 'Martin', 'martinghiotti2013@gmail.com', null,null,null,1, '$2y$10$YwIBg.N2k3NiV4tuXDtBme.cAORjAIlBqiuBraF4iXfiZQvV574BG', current_date);
+insert into usuarios values(default, 'Martin', 'martinghiotti2013@gmail.com', null,null,null,1, '$2y$10$YwIBg.N2k3NiV4tuXDtBme.cAORjAIlBqiuBraF4iXfiZQvV574BG', '2020-05-07 00:00:00');
+
+
+insert into animales values(default,2,16,'Gaia','1-1-5eb3e79942910.jpeg',null,0,'perro','3',1,1,'No tiene nada particular',1,1,'2020-05-07 00:00:00');
+insert into animales values(default,2,16,'Toby','2-1-5eb3e82da5672.jpeg',null,0,'perro','2',1,1,'Le falta una patita',1,1,'2020-05-08 00:00:00');
+insert into animales values(default,2,16,'Tom','3-1-5eb3e855b77c6.jpeg',null,0,'gato','0,1',1,1,'Le falta una oreja',1,1,'2020-05-09 00:00:00');
+insert into animales values(default,2,14,'Willy','4-1-5eb3e8c908f38.jpeg',null,1,'gato','2,3,4,5,6,7,8,9,10',1,1,'No tiene nada particular',1,1,'2020-05-09 00:00:00');
+insert into animales values(default,6,19,'Piri','5-1-5eb3f17cb5719.png',null,1,'gato','10,*',0,2,'',1,1,'2020-04-09 00:00:00');
+insert into animales values(default,6,19,'Jack','6-1-5eb46e5f38fe5.jpeg',null,1,'perro','0,1,2',1,1,'',1,1,'2020-04-09 00:00:00');
+
+insert into animales_perdidos values(default,1,'2020-04-29 00:00:00','3412548193',null,0,1,1,'2020-05-07 00:00:00');
+insert into animales_perdidos values(default,2,'2020-04-29 00:00:00','3412548193',null,0,1,1,'2020-05-07 00:00:00');
+insert into animales_perdidos values(default,3,'2020-04-29 00:00:00','3412548193',null,0,1,1,'2020-05-07 00:00:00');
+insert into animales_perdidos values(default,4,'2020-04-27 00:00:00','3412548193',null,0,1,1,'2020-05-07 00:00:00');
+insert into animales_perdidos values(default,5,'2020-04-28 00:00:00','3412548193',null,0,1,1,'2020-05-07 00:00:00');
+insert into animales_perdidos values(default,6,'2020-04-30 00:00:00','3412548193',null,0,1,1,'2020-05-07 00:00:00');
