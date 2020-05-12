@@ -50,10 +50,11 @@ ALTER TABLE animales ADD FOREIGN KEY (`idZona`) REFERENCES zonas(`id`);
 CREATE TABLE `animales_perdidos` (
      `id` int unsigned NOT NULL AUTO_INCREMENT,
      `idAnimal` int unsigned NOT NULL,
-     `fechaPerdido` datetime NOT NULL,
+     `fecha` datetime NOT NULL,
      `celularDuenio` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
      `celularSecundario` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
      `habilitado` tinyint(1) NOT NULL DEFAULT '0',
+     `resuelto`  tinyint(1) NOT NULL DEFAULT '0',
      `idCreador` int unsigned NOT NULL,
      `ultUsuarioMdf` int unsigned NOT NULL,
      `ultHoraMdf` datetime NULL DEFAULT NULL,
@@ -62,26 +63,28 @@ CREATE TABLE `animales_perdidos` (
      KEY `animales_perdidos_ultusuariomdf_foreign` (`ultUsuarioMdf`),
      CONSTRAINT `animales_perdidos_idcreador_foreign` FOREIGN KEY (`idCreador`) REFERENCES `usuarios` (`id`),
      CONSTRAINT `animales_perdidos_ultusuariomdf_foreign` FOREIGN KEY (`ultUsuarioMdf`) REFERENCES `usuarios` (`id`),
-     UNIQUE KEY `animales_perdidos_unique` (`idAnimal`,`fechaPerdido`)
+     UNIQUE KEY `animales_perdidos_unique` (`idAnimal`,`fecha`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 CREATE UNIQUE INDEX index_animales_perdidos ON animales_perdidos (idAnimal);
 
 -- Tabla Animales Encontrados
 CREATE TABLE `animales_encontrados` (
     `id` int unsigned NOT NULL AUTO_INCREMENT,
-    `idAnimal` int unsigned NOT NULL,
-    `fechaEncontrado` datetime NOT NULL,
-    `celularPersona` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-    `celularSecundario` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-    `idCreador` int unsigned NOT NULL,
-    `ultUsuarioMdf` int unsigned NOT NULL,
-    `ultHoraMdf` datetime NULL DEFAULT NULL,
-    PRIMARY KEY (`id`),
-    KEY `animales_encontrados_idcreador_foreign` (`idCreador`),
-    KEY `animales_encontrados_ultusuariomdf_foreign` (`ultUsuarioMdf`),
-    CONSTRAINT `animales_encontrados_idcreador_foreign` FOREIGN KEY (`idCreador`) REFERENCES `usuarios` (`id`),
-    CONSTRAINT `animales_encontrados_ultusuariomdf_foreign` FOREIGN KEY (`ultUsuarioMdf`) REFERENCES `usuarios` (`id`),
-    UNIQUE KEY `animales_encontrados_unique` (`idAnimal`, `fechaEncontrado`)
+     `idAnimal` int unsigned NOT NULL,
+     `fecha` datetime NOT NULL,
+     `celularDuenio` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+     `celularSecundario` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+     `habilitado` tinyint(1) NOT NULL DEFAULT '0',
+     `resuelto`  tinyint(1) NOT NULL DEFAULT '0',
+     `idCreador` int unsigned NOT NULL,
+     `ultUsuarioMdf` int unsigned NOT NULL,
+     `ultHoraMdf` datetime NULL DEFAULT NULL,
+     PRIMARY KEY (`id`),
+     KEY `animales_encontrados_idcreador_foreign` (`idCreador`),
+     KEY `animales_encontrados_ultusuariomdf_foreign` (`ultUsuarioMdf`),
+     CONSTRAINT `animales_encontrados_idcreador_foreign` FOREIGN KEY (`idCreador`) REFERENCES `usuarios` (`id`),
+     CONSTRAINT `animales_encontrados_ultusuariomdf_foreign` FOREIGN KEY (`ultUsuarioMdf`) REFERENCES `usuarios` (`id`),
+    UNIQUE KEY `animales_encontrados_unique` (`idAnimal`, `fecha`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 CREATE UNIQUE INDEX index_animales_encontrados_idAnimal ON animales_encontrados (idAnimal);
 
@@ -138,9 +141,17 @@ insert into animales values(default,2,14,'Willy','4-1-5eb3e8c908f38.jpeg',null,1
 insert into animales values(default,6,19,'Piri','5-1-5eb3f17cb5719.png',null,1,'gato','10,*',0,2,'',1,1,'2020-04-09 00:00:00');
 insert into animales values(default,6,19,'Jack','6-1-5eb46e5f38fe5.jpeg',null,1,'perro','0,1,2',1,1,'',1,1,'2020-04-09 00:00:00');
 
-insert into animales_perdidos values(default,1,'2020-04-29 00:00:00','3412548193',null,0,1,1,'2020-05-07 00:00:00');
-insert into animales_perdidos values(default,2,'2020-04-29 00:00:00','3412548193',null,0,1,1,'2020-05-07 00:00:00');
-insert into animales_perdidos values(default,3,'2020-04-29 00:00:00','3412548193',null,0,1,1,'2020-05-07 00:00:00');
-insert into animales_perdidos values(default,4,'2020-04-27 00:00:00','3412548193',null,0,1,1,'2020-05-07 00:00:00');
-insert into animales_perdidos values(default,5,'2020-04-28 00:00:00','3412548193',null,0,1,1,'2020-05-07 00:00:00');
-insert into animales_perdidos values(default,6,'2020-04-30 00:00:00','3412548193',null,0,1,1,'2020-05-07 00:00:00');
+insert into animales_perdidos values(default,1,'2020-04-29 00:00:00','3412548193',null,0,0,1,1,'2020-05-07 00:00:00');
+insert into animales_perdidos values(default,2,'2020-04-29 00:00:00','3412548193',null,0,0,1,1,'2020-05-07 00:00:00');
+insert into animales_perdidos values(default,3,'2020-04-29 00:00:00','3412548193',null,0,0,1,1,'2020-05-07 00:00:00');
+insert into animales_perdidos values(default,4,'2020-04-27 00:00:00','3412548193',null,0,0,1,1,'2020-05-07 00:00:00');
+insert into animales_perdidos values(default,5,'2020-04-28 00:00:00','3412548193',null,0,0,1,1,'2020-05-07 00:00:00');
+insert into animales_perdidos values(default,6,'2020-04-30 00:00:00','3412548193',null,0,0,1,1,'2020-05-07 00:00:00');
+
+
+insert into animales_encontrados values(default,1,'2020-05-29 00:00:00','3412548193',null,0,0,1,1,'2020-05-07 00:00:00');
+insert into animales_encontrados values(default,2,'2020-05-29 00:00:00','3412548193',null,0,0,1,1,'2020-05-07 00:00:00');
+insert into animales_encontrados values(default,3,'2020-05-29 00:00:00','3412548193',null,0,0,1,1,'2020-05-07 00:00:00');
+insert into animales_encontrados values(default,4,'2020-05-27 00:00:00','3412548193',null,0,0,1,1,'2020-05-07 00:00:00');
+insert into animales_encontrados values(default,5,'2020-05-28 00:00:00','3412548193',null,0,0,1,1,'2020-05-07 00:00:00');
+insert into animales_encontrados values(default,6,'2020-05-30 00:00:00','3412548193',null,0,0,1,1,'2020-05-07 00:00:00');

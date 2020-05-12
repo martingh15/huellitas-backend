@@ -3,27 +3,27 @@
 
 namespace App\Services;
 
-use App\Perdido;
+use App\Encontrado;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Mockery\Exception;
 
-trait PerdidoService
+trait EncontradoService
 {
     use AnimalService;
 
     public function getAll($parametros)
     {
         if (array_key_exists('id', $parametros) && !empty($parametros["id"])) {
-            return Perdido::with("Animal")->where("id", $parametros["id"])->get();
+            return Encontrado::with("Animal")->where("id", $parametros["id"])->get();
         } else {
-            $query = Perdido::select('animales_perdidos.*')
-                ->join('animales', 'animales_perdidos.idAnimal', 'animales.id')
+            $query = Encontrado::select('animales_encontrados.*')
+                ->join('animales', 'animales_encontrados.idAnimal', 'animales.id')
                 ->where('habilitado',1)
                 ->with("Animal");
-
+            
             $queryFinal = $this->filtrarAnimales($parametros, $query);
 
             $query->orderBy($parametros["order"], $parametros["direction"])->limit(8);
