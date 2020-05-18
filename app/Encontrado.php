@@ -10,7 +10,7 @@ class Encontrado extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['id', 'idUsuario', 'idAnimal', 'idZona', 'fechaEncontrado', 'celularPersona',
+    protected $fillable = ['id', 'idUsuario', 'idAnimal', 'idZona', 'fecha', 'celularPersona',
         'telefonoPersona', 'emailPersona'];
 
     public function usuario()

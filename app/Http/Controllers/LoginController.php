@@ -34,7 +34,7 @@ class LoginController extends Controller
                     'message' => "Su usuario no ha sido habilitado aún. Aguarde la habilitación o contáctese con nosotros."
                 ), 500);
             }
-            if (!isset($credentials['forzado']) && !Hash::check($credentials['password'], $usuario->password)) {
+            if ($credentials['forzado'] === "" && !Hash::check($credentials['password'], $usuario->password)) {
                 return Response::json(array(
                     'code' => 500,
                     'message' => "Usuario y/o contraseña incorrectos."

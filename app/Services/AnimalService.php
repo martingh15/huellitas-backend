@@ -21,7 +21,7 @@ trait AnimalService
      * @return Animal|array
      */
     public function crearMascota($bodyMascota, $imagen1, $imagen2) {
-        $errores = $this->validarCrearMascota($bodyMascota);
+        $errores = $this->validarMascota($bodyMascota);
         if (count($errores) > 0) {
             return [
                 'errores' => $errores
@@ -35,35 +35,10 @@ trait AnimalService
             } else if ($bodyMascota['castrado'] === 2 || $bodyMascota['castrado'] === "2") {
                 $mascota->castrado = false;
             }
-            if (isset($bodyMascota['rangoEdad']) &&  $bodyMascota['rangoEdad'] === 1) {
-                switch($bodyMascota['edadAproximada']) {
-                    case 1:
-                        $mascota->edadAproximada = ',0,1,2,';
-                        break;
-                    case 2:
-                        $mascota->edadAproximada = ',2,3,4,5,6,7,8,9,10,';
-                        break;
-                    case 3:
-                        $mascota->edadAproximada = ',10,*,';
-                        break;
-                    default:
-                        $mascota->edadAproximada = '';
-                        break;
-                }
-            } else {
-                if (intval($bodyMascota['edadAproximada']) !== 0) {
-                    $mascota->edadAproximada = $bodyMascota['edadAproximada']; 
-                } else {
-                    $mascota->edadAproximada = ',0,1,2,';
-                }
-                
-            }
-            $mascota->tamanio = $this->getTextoTamanio($bodyMascota['tamanio']);
             $mascota->idCreador = $idLogueado;
             $mascota->ultUsuarioMdf = $idLogueado;
             $mascota->ultHoraMdf = Carbon::now()->format('Y-m-d');
             $mascota->save();
-            \Log::info('Mascota creada: ' . $mascota);
             $resultado1 = $this->crearImagenesAnimal($mascota, $imagen1, true);
             if (isset($resultado1['error'])) {
                 return [
@@ -113,8 +88,8 @@ trait AnimalService
         }
 
         //nombre de la imagen con idUnico-idGremio, obtengo la extension original del archivo
-        $id = $esPrincipal ? 1 : 2;
-        $fileName = "$mascota->id-" . $id . "-" . uniqid() . "." . $imagen->getClientOriginalExtension();
+        $nombre = $esPrincipal ? 'principal' : 'secundaria';
+        $fileName = "$mascota->id-" . $nombre . "-" . uniqid() . "." . $imagen->getClientOriginalExtension();
         $carpeta = public_path() . '/img/animales/' . $fileName;
         $img = Image::make($imagen);
 
@@ -129,8 +104,10 @@ trait AnimalService
         //Guardo la imagen
         if ($esPrincipal) {
             $mascota->imagenPrincipal = $fileName;
+            $mascota->fileImagenPrincipal = $imagen->getClientOriginalName();
         } else {
             $mascota->imagenSecundaria = $fileName;
+            $mascota->fileImagenSecundaria = $imagen->getClientOriginalName();
         }
         $mascota->save();
         $img->save($carpeta);
@@ -139,13 +116,50 @@ trait AnimalService
         ];
     }
 
+    public function actualizarAnimal($bodyMascota, $imagen1, $imagen2) {
+        $errores = $this->validarMascota($bodyMascota);
+        if (count($errores) > 0) {
+            return [
+                'errores' => $errores
+            ];
+        }
+        try {
+            $mascota = Animal::find($bodyMascota["id"]);
+            $mascota->fill($bodyMascota);
+            $mascota->save();
+             if ($imagen1 !== null) {
+                $resultado1 = $this->crearImagenesAnimal($mascota, $imagen1, false);
+                if (isset($resultado1['error'])) {
+                    return [
+                        'errores' => $resultado1['error']
+                    ];
+                }
+            }
+            if ($imagen2 !== null) {
+                $resultado2 = $this->crearImagenesAnimal($mascota, $imagen2, false);
+                if (isset($resultado2['error'])) {
+                    return [
+                        'errores' => $resultado2['error']
+                    ];
+                }
+            }
+            return $mascota;
+        } catch(Exception $e) {
+            return [
+                'errores' => $e->getMessage()
+            ];
+        }
+        
+        return $mascota;
+    }
+
     /**
      * Valida que los datos de la mascota sean correctos
      *
      * @param $mascota
      * @return array
      */
-    protected function validarCrearMascota($mascota) {
+    protected function validarMascota($mascota) {
         $errores = [];
         if (!isset($mascota['sexo']) || !isset($mascota['edadAproximada']) || !isset($mascota['rangoEdad'])
             || !isset($mascota['castrado']) || !isset($mascota['tamanio']) || !isset($mascota['imagenPrincipal'])
@@ -162,112 +176,46 @@ trait AnimalService
             $errores[] = 'El campo castrado debe 0, 1, 2 para "No", "Si", "No lo sé" respectivamente';
         }
 
-        if(is_array($mascota['tamanio'])
-            && !in_array("1", $mascota['tamanio'])
-            && !in_array("2", $mascota['tamanio'])
-            && !in_array("3", $mascota['tamanio'])
-            && !in_array(1, $mascota['tamanio'])
-            && !in_array(2, $mascota['tamanio'])
-            && !in_array(3, $mascota['tamanio'])
-        ) {
+        if(!strrpos($$mascota['tamanio'], "1") && !strrpos($$mascota['tamanio'], "2") && !strrpos($$mascota['tamanio'], "3")) {
             $errores[] = 'El campo tamanio debe ser 1, 2 o 3 para "Chico", "Mediano", "Grande" respectivamente';
         }
 
-        if ($mascota['rangoEdad'] ===  false && intval($mascota['edadAproximada']) < 0) {
-            $errores[] = 'El campo edadAproximada no puede ser menor a cero';
+        if (intval($mascota['edadAproximada']) !== 1 && intval($mascota['edadAproximada']) !== 2 && intval($mascota['edadAproximada']) !== 3) {
+            $errores[] = 'El campo edadAproximada debe ser 1, 2 o 3 para los 3 rangos';
         }
         return $errores;
     }
 
-    /**
-     * Devuelve el nombre del tamaño de un animal
-     *
-     * @param $tamanio
-     * @return string
-     */
-    protected function getTextoTamanio($tamanio) {
-        $string = "";
-        foreach ($tamanio as $key => $value) {
-            $string .= $value . ',';        
-        }
-        return $string;
-    }
-
     public function filtrarAnimales($parametros, $query) {
         if (array_key_exists('tipo', $parametros) && !empty($parametros["tipo"])) {
-                $query->where("animales.tipo", $parametros["tipo"]);
-            }
-            if (array_key_exists('castrado', $parametros) 
-                && ($parametros['castrado'] === "1" || $parametros['castrado'] === "0")) {
-                $query->where("animales.castrado", $parametros["castrado"]);
-            }
-            
-            if (array_key_exists('sexo', $parametros) 
-                && ($parametros['sexo'] === "1" || $parametros['sexo'] === "0")) {
-                $query->where("animales.sexo", $parametros["sexo"]);
-            }
-
-            if (array_key_exists('idZona', $parametros) && !empty($parametros["idZona"])) {
-                $query->where("animales.idZona", $parametros["idZona"]);
-            }
-
-            if (array_key_exists('tamanio', $parametros) && !empty($parametros["tamanio"])) {
-                $query->where("animales.tamanio", 'like', '%' . $parametros["tamanio"] . '%');
-            }
-
-            if (array_key_exists('edadMinima', $parametros) && $parametros["edadMinima"] !== null) {
-                if (intval($parametros['edadMinima']) > 10) {
-                    $query->where(function ($query) use ($parametros) {
-                        $query->where("animales.edadAproximada", '!=', ',0,1,2,');
-                        $query->where("animales.edadAproximada", '!=', ',2,3,4,5,6,7,8,9,10,');
-                        $query->where("animales.edadAproximada", '>=', intval($parametros["edadMinima"]));
-                        $query->orWhere("animales.edadAproximada", ',10,*,');
-                    });                    
-               } else if (intval($parametros["edadMinima"]) > 2 && intval($parametros["edadMinima"]) <= 10) {
-                   $query->where(function ($query) use ($parametros) {
-                        $query->where("animales.edadAproximada", '!=', ',0,1,2,');
-                        $query->where("animales.edadAproximada", '>=', intval($parametros["edadMinima"]));
-                        $query->orWhere("animales.edadAproximada", ',10,*,');
-                        $query->orWhere("animales.edadAproximada", ',2,3,4,5,6,7,8,9,10,');
-                    });                                       
-                } else if (intval($parametros["edadMinima"]) <= 2) {
-                    $query->where(function ($query) use ($parametros) {
-                        $query->where("animales.edadAproximada", '>=', intval($parametros["edadMinima"]));
-                        $query->orWhere("animales.edadAproximada", ',10,*,');
-                        $query->orWhere("animales.edadAproximada", ',2,3,4,5,6,7,8,9,10,');
-                        $query->orWhere("animales.edadAproximada", ',0,1,2,');
-                    });  
-                }
-            }
-
-            if (array_key_exists('edadMaxima', $parametros) && $parametros["edadMaxima"] !== null) {
-                if (intval($parametros['edadMaxima']) === 0) {
-                    $query->where("animales.edadAproximada", '!=', ',2,3,4,5,6,7,8,9,10,');
-                    $query->where("animales.edadAproximada", '!=', ',10,*,');
-                    $query->where("animales.edadAproximada", ',0,1,2,');
-                } else if (intval($parametros["edadMaxima"]) > 0 && intval($parametros["edadMaxima"]) <= 9) {
-                    if (intval($parametros["edadMaxima"]) === 1) {
-                        $query->where("animales.edadAproximada", '!=', ',2,3,4,5,6,7,8,9,10,');
-                    }                    
-                    $query->where("animales.edadAproximada", '!=', ',10,*,');
-                    $query->where(function ($query) use ($parametros) {
-                        $query->orWhere("animales.edadAproximada", ",0,1,2,");
-                        $query->orWhere("animales.edadAproximada", '<=', intval($parametros["edadMaxima"]));
-                    });                    
-                } else if (intval($parametros["edadMaxima"]) >= 10) {
-                    $query->where(function ($query) use ($parametros) {
-                        $query->orWhere("animales.edadAproximada", ',0,1,2,');
-                        $query->orWhere("animales.edadAproximada", ",2,3,4,5,6,7,8,9,10,");
-                        $query->orWhere("animales.edadAproximada", ',10,*,');
-                        $query->orWhere("animales.edadAproximada", '<=', intval($parametros["edadMaxima"]));                     
-                    });
-                }
-            }
-
-            if (array_key_exists('registros', $parametros) && $parametros["registros"] > 0) {
-                $query->offset($parametros["registros"]);
-            }
+            $query->where("animales.tipo", $parametros["tipo"]);
+        }
+        if (array_key_exists('castrado', $parametros) 
+            && ($parametros['castrado'] === "1" || $parametros['castrado'] === "0")) {
+            $query->where("animales.castrado", $parametros["castrado"]);
+        }
         
-            return $query;
+        if (array_key_exists('sexo', $parametros) 
+            && ($parametros['sexo'] === "1" || $parametros['sexo'] === "0")) {
+            $query->where("animales.sexo", $parametros["sexo"]);
+        }
+
+        if (array_key_exists('idZona', $parametros) && !empty($parametros["idZona"])) {
+            $query->where("animales.idZona", $parametros["idZona"]);
+        }
+        
+        if (array_key_exists('tamanio', $parametros) && !empty($parametros["tamanio"])) {
+            $query->where("animales.tamanio", 'like', '%' . $parametros["tamanio"] . '%');
+        }
+
+        if (array_key_exists('edadAproximada', $parametros) && $parametros["edadAproximada"] !== null) {
+            $query->where("animales.edadAproximada", $parametros["edadAproximada"]);
+        }
+
+        if (array_key_exists('registros', $parametros) && $parametros["registros"] > 0) {
+            $query->offset($parametros["registros"]);
+        }
+    
+        return $query;
     }
 }

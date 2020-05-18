@@ -55,7 +55,7 @@ trait PerdidoService
         if (isset($requestPerdido['imagenSecundaria'])) {
             $imagenSecundaria = $requestPerdido->file('imagenSecundaria');
         }
-        $resultado = $this->crearMascota($perdido['mascota'], $imagenPrincipal, $imagenSecundaria);
+        $resultado = $this->crearMascota($perdido['animal'], $imagenPrincipal, $imagenSecundaria);
         if (isset($resultado['errores'])) {
             DB::rollback();
             return response()->json([
@@ -97,11 +97,11 @@ trait PerdidoService
     protected function validarCrearPerdido($perdido)
     {
         $errores = [];
-        if (!isset($perdido['mascota']) || !isset($perdido['fechaPerdido']) || !isset($perdido['celularDuenio'])) {
-            $errores[] = 'Faltan campos requeridos, debe enviar: mascota, fechaPerdido y celularDuenio';
+        if (!isset($perdido['animal']) || !isset($perdido['fecha']) || !isset($perdido['celularDuenio'])) {
+            $errores[] = 'Faltan campos requeridos, debe enviar: animal, fecha y celularDuenio';
         }
-        if (isset($perdido['fechaPerdido'])) {
-            $fechaPerdido = $perdido['fechaPerdido'] !== null && $perdido['fechaPerdido'] !== "" ? new Carbon($perdido['fechaPerdido']) : null;
+        if (isset($perdido['fecha'])) {
+            $fechaPerdido = $perdido['fecha'] !== null && $perdido['fecha'] !== "" ? new Carbon($perdido['fecha']) : null;
             if ($fechaPerdido && Carbon::createFromFormat('Y-m-d H:i:s', $fechaPerdido) === false) {
                 $errores[] = "La fecha desde no respeta el formato YYYY-MM-DD";
             } else if ($fechaPerdido === null) {
@@ -112,5 +112,61 @@ trait PerdidoService
             }
         }
         return $errores;
+    }
+
+    public function updatePerdido($bodyContent, $id) {
+        DB::beginTransaction();        
+        $perdido = Perdido::find($id);
+        if (empty($perdido))
+            return response()->json([
+                'message' => 'Ha ocurrido un error al actualizar el animal perdido',
+                'errores' => 'Perdido no encontrado'
+            ], 500);
+        $bodyPerdido = json_decode($requestPerdido['perdido'], true);
+        \Log::info($bodyPerdido);
+        $errores = $this->validarCrearPerdido($bodyPerdido);
+        if (count($errores) > 0) {
+            return response()->json([
+                'message' => 'Ha ocurrido un error al actualizar el animal perdido',
+                'errores' => $errores
+            ], 500);
+        } else {
+            $perdido->fill($bodyPerdido);
+            $imagenPrincipal = null;
+            $imagenSecundaria = null;
+            if (isset($bodyContent['imagenPrincipal'])) {
+                $imagenPrincipal = $bodyContent->file('imagenPrincipal');
+            }
+            if (isset($bodyContent['imagenSecundaria'])) {
+                $imagenSecundaria = $bodyContent->file('imagenSecundaria');
+            }
+            $resultado = $this->actualizarAnimal($bodyContent['animal'], $imagenPrincipal, $imagenSecundaria);    
+            if (isset($resultado['errores'])) {
+                DB::rollback();
+                return response()->json([
+                    'message' => 'Ha ocurrido un error al actualizar la mascota perdida',
+                    'errores' => $resultado['errores']
+                ], 500);
+            }
+            try {
+                $idLogueado = Auth::user()['id'];
+                $perdido->ultUsuarioMdf = $idLogueado;
+                $perdido->ultHoraMdf = Carbon::now()->format('Y-m-d');
+                $perdido->save();
+                DB::commit();
+            } catch (Exception $e) {
+                DB::rollback();
+                return response()->json([
+                    'message' => 'Ha ocurrido un error al actualizar el animal perdido',
+                    'errores' => $e->getMessage()
+                ], 500);
+            }
+            return response()->json([
+                'success' => [
+                    'message' => 'Se ha creado el animal perdido con éxito',
+                    'perdido' => $perdido
+                ]
+            ], 200);
+        }        
     }
 }

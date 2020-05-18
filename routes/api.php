@@ -35,4 +35,5 @@ Route::group(['middleware' => 'jwt.auth','jwt.refresh'], function () {
     Route::post('/animales','AnimalController@store');
     Route::put('/animales/{idAnimal}','AnimalController@update');
     Route::post('/perdidos','PerdidoController@store');
+    Route::post('/update-perdido/{id}','PerdidoController@updatePerdido');
 });
