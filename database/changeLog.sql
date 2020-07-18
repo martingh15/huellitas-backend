@@ -140,20 +140,20 @@ insert into animales values(default,2,16,'Gaia','1-1-5eb3e79942910.jpeg','gaia.j
 insert into animales values(default,2,16,'Toby','2-1-5eb3e82da5672.jpeg','toby.jpeg',null,null,0,'perro',1,1,'1,','Le falta una patita',1,1,'2020-05-08 00:00:00');
 insert into animales values(default,2,16,'Tom','3-1-5eb3e855b77c6.jpeg','tom.jpeg',null,null,0,'gato',1,1,'1,2','Le falta una oreja',1,1,'2020-05-09 00:00:00');
 insert into animales values(default,2,14,'Willy','4-1-5eb3e8c908f38.jpeg','willy.jpeg',null,null,1,'gato',2,1,'2,3,','No tiene nada particular',1,1,'2020-05-09 00:00:00');
-insert into animales values(default,6,19,'Piri','5-1-5eb3f17cb5719.png','piri.jpeg',null,null,1,'gato',3,0,2,'',1,'2,','2020-04-09 00:00:00');
-insert into animales values(default,6,19,'Jack','6-1-5eb46e5f38fe5.jpeg','jack.jpeg',null,null,1,'perro',1,1,1,'',1,'1,','2020-04-09 00:00:00');
+insert into animales values(default,6,19,'Piri','5-1-5eb3f17cb5719.png','piri.jpeg',null,null,1,'gato',2,1,'2,3,','No tiene nada particular',1,1,'2020-05-09 00:00:00');
+insert into animales values(default,6,19,'Jack','6-1-5eb46e5f38fe5.jpeg','jack.jpeg',null,null,1,'gato',2,1,'2,3,','No tiene nada particular',1,1,'2020-05-09 00:00:00');
 
-insert into animales_perdidos values(default,1,'2020-04-29 00:00:00','3412548193',null,0,0,1,1,'2020-05-07 00:00:00');
-insert into animales_perdidos values(default,2,'2020-04-29 00:00:00','3412548193',null,0,0,1,1,'2020-05-07 00:00:00');
-insert into animales_perdidos values(default,3,'2020-04-29 00:00:00','3412548193',null,0,0,1,1,'2020-05-07 00:00:00');
-insert into animales_perdidos values(default,4,'2020-04-27 00:00:00','3412548193',null,0,0,1,1,'2020-05-07 00:00:00');
-insert into animales_perdidos values(default,5,'2020-04-28 00:00:00','3412548193',null,0,0,1,1,'2020-05-07 00:00:00');
-insert into animales_perdidos values(default,6,'2020-04-30 00:00:00','3412548193',null,0,0,1,1,'2020-05-07 00:00:00');
+insert into animales_perdidos values(default,(select id from animales where nombre = 'Gaia'),'2020-04-29 00:00:00','3412548193',null,0,0,1,1,'2020-05-07 00:00:00');
+insert into animales_perdidos values(default,(select id from animales where nombre = 'Toby'),'2020-04-29 00:00:00','3412548193',null,0,0,1,1,'2020-05-07 00:00:00');
+insert into animales_perdidos values(default,(select id from animales where nombre = 'Tom'),'2020-04-29 00:00:00','3412548193',null,0,0,1,1,'2020-05-07 00:00:00');
+insert into animales_perdidos values(default,(select id from animales where nombre = 'Willy'),'2020-04-27 00:00:00','3412548193',null,0,0,1,1,'2020-05-07 00:00:00');
+insert into animales_perdidos values(default,(select id from animales where nombre = 'Piri'),'2020-04-28 00:00:00','3412548193',null,0,0,1,1,'2020-05-07 00:00:00');
+insert into animales_perdidos values(default,(select id from animales where nombre = 'Jack'),'2020-04-30 00:00:00','3412548193',null,0,0,1,1,'2020-05-07 00:00:00');
 
 
-insert into animales_encontrados values(default,1,'2020-05-29 00:00:00','3412548193',null,0,0,1,1,'2020-05-07 00:00:00');
-insert into animales_encontrados values(default,2,'2020-05-29 00:00:00','3412548193',null,0,0,1,1,'2020-05-07 00:00:00');
-insert into animales_encontrados values(default,3,'2020-05-29 00:00:00','3412548193',null,0,0,1,1,'2020-05-07 00:00:00');
-insert into animales_encontrados values(default,4,'2020-05-27 00:00:00','3412548193',null,0,0,1,1,'2020-05-07 00:00:00');
-insert into animales_encontrados values(default,5,'2020-05-28 00:00:00','3412548193',null,0,0,1,1,'2020-05-07 00:00:00');
-insert into animales_encontrados values(default,6,'2020-05-30 00:00:00','3412548193',null,0,0,1,1,'2020-05-07 00:00:00');
+insert into animales_encontrados values(default,(select id from animales where nombre = 'Gaia'),'2020-05-29 00:00:00','3412548193',null,0,0,1,1,'2020-05-07 00:00:00');
+insert into animales_encontrados values(default,(select id from animales where nombre = 'Toby'),'2020-05-29 00:00:00','3412548193',null,0,0,1,1,'2020-05-07 00:00:00');
+insert into animales_encontrados values(default,(select id from animales where nombre = 'Tom'),'2020-05-29 00:00:00','3412548193',null,0,0,1,1,'2020-05-07 00:00:00');
+insert into animales_encontrados values(default,(select id from animales where nombre = 'Willy'),'2020-05-27 00:00:00','3412548193',null,0,0,1,1,'2020-05-07 00:00:00');
+insert into animales_encontrados values(default,(select id from animales where nombre = 'Piri'),'2020-05-28 00:00:00','3412548193',null,0,0,1,1,'2020-05-07 00:00:00');
+insert into animales_encontrados values(default,(select id from animales where nombre = 'Jack'),'2020-05-30 00:00:00','3412548193',null,0,0,1,1,'2020-05-07 00:00:00');
